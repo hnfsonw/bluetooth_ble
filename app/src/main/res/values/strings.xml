@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Dfu tool</string>
+    <string name="login_loading">正在登录……</string>
+    <string name="dismiss_loading">再按一次取消加载</string>
+    <string name="exit">再按一次返回退出应用</string>
+    <string name="input_complete">请输入账号密码</string>
+    <string name="forgrt_psw_lable"><u>忘记密码?</u></string>
+    <string name="remember_psw_lable">记住密码</string>
+
+</resources>

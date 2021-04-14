@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.activity.LoginActivity">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/include_login" />
+
+    <ImageView
+        android:id="@+id/login_iv_logo"
+        android:layout_width="186dp"
+        android:layout_height="158dp"
+        android:layout_marginTop="32dp"
+        android:background="#00DF2828"
+        android:src="@drawable/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.462"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="32dp"
+        android:background="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/login_tv_aount"
+        app:layout_constraintTop_toBottomOf="@+id/login_iv_logo" />
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="32dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/login_tv_psw"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/login_tv_psw"
+        app:layout_constraintTop_toTopOf="@+id/login_tv_psw" />
+
+    <TextView
+        android:id="@+id/login_tv_aount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="账号"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/view3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view3" />
+
+    <TextView
+        android:id="@+id/login_tv_psw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="密码"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/login_tv_aount"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/login_tv_aount"
+        app:layout_constraintTop_toBottomOf="@+id/login_tv_aount" />
+
+    <EditText
+        android:id="@+id/login_etv_psw"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="32dp"
+        android:background="@null"
+        android:ems="10"
+        android:hint="输入密码"
+        android:inputType="textPassword"
+        android:paddingLeft="8dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="16dp"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/view4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/login_tv_psw" />
+
+    <CheckBox
+        android:id="@+id/login_cb_remaber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/remember_psw_lable"
+        app:layout_constraintStart_toStartOf="@+id/login_tv_psw"
+        app:layout_constraintTop_toBottomOf="@+id/login_tv_psw" />
+
+    <TextView
+        android:id="@+id/login_tv_forget_psw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/forgrt_psw_lable"
+        android:textColor="#3F51B5"
+        app:layout_constraintBottom_toBottomOf="@+id/login_cb_remaber"
+        app:layout_constraintEnd_toEndOf="@+id/login_etv_psw"
+        app:layout_constraintTop_toTopOf="@+id/login_cb_remaber" />
+
+    <Button
+        android:id="@+id/login_btn_login"
+        android:layout_width="265dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="56dp"
+        android:background="@drawable/btn_shape_selector"
+        android:text="登录"
+        android:textColor="#515255"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_cb_remaber" />
+
+    <EditText
+        android:id="@+id/login_etv_aount"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="32dp"
+        android:background="@null"
+        android:ems="10"
+        android:hint="输入账号"
+        android:inputType="phone"
+        android:paddingLeft="8dp"
+        android:paddingTop="16dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="16dp"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/view3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.692"
+        app:layout_constraintStart_toEndOf="@+id/login_tv_aount" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

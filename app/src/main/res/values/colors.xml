@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="kprogresshud_default_color">#b1000000</color>
+    <color name="viewfinder_mask">#40000000</color>
+    <color name="white">#fff</color>
+    <color name="btn_normal_black">#000000</color>
+    <color name="btn_pressed_gray">#615A5A</color>
+    <color name="red">#F50B0B</color>
+    <color name="green">#2AB631</color>
+</resources>
