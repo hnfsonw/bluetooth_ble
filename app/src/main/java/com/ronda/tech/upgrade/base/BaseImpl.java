@@ -84,11 +84,11 @@ public abstract class BaseImpl {
             Gson gson = new Gson();
             String str = gson.toJson(body);
             LogUtils.e(TAG,"json str:"+str);
-//            if ("0".equals(body.getRet())){
+            if ("0".equals(body.getRet())){
                 onRequestSuccessful(body);
-//            }else {
-//                onRequestFailure(body.getRet()+" "+body.getMessage());
-//            }
+            }else {
+                onRequestFailure(body.getRet()+" "+body.getMessage());
+            }
         }
 
         @Override

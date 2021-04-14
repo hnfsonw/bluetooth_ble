@@ -87,6 +87,7 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
     private int REQUEST_ENABLE_BT = 2;
     private ArrayAdapter<String> adapter;
     private BleManager bleManager;
+    private TextView topTitle;
 
     //从下拉框中选中的mac地址
     private String selectedMac;
@@ -194,6 +195,8 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
         btnUpdateCode.setClickable(true);
         btnReset = findViewById(R.id.home_btn_reset);
         btnReset.setOnClickListener(this);
+        topTitle = findViewById(R.id.home_tv_top_title);
+        topTitle.setText("主页");
 
         IntentFilter filter  = new IntentFilter();
         filter.addAction("com.dfu.successful.flag");
@@ -350,6 +353,12 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
                 break;
             case R.id.home_btn_upgrade:
                 if (getCurrentDevice() != null){
+                    String fileName = downloadUrl.substring(downloadUrl.lastIndexOf("/")+1);
+                    File file = new File(Constants.APP_ROOT_PATH + Constants.DOWNLOAD_DIR + fileName);
+                    if (!file.exists()){
+                        showToast("请先下载升级文件");
+                        return;
+                    }
                     //发送DFU指令
                     showLoading("",mContext);
                     bleManager.reDiscover();
@@ -363,7 +372,6 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
                 tvConnectSates.setTextColor(getResources().getColor(R.color.red));
                 tvVerison.setText("");
                 tvCpuVerison.setText("");
-                tvSystemVersion.setText("");
                 break;
             default:
 
@@ -379,10 +387,10 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
             case 1:
                 if (data != null){
                     String cabinet_id = data.getExtras().getString("result");
-                    LogUtils.e(TAG,"cabinet_id:"+cabinet_id);
-                    tvQrResult.setText(cabinet_id);
+                    LogUtils.e(TAG,"cabinet_id:"+cabinet_id.substring(cabinet_id.lastIndexOf("=")+1));
+                    tvQrResult.setText(cabinet_id.substring(cabinet_id.lastIndexOf("=")+1));
                     //扫描id号后去服务器查询mac地址
-                    mIHomeAPresenter.getMacFromService(cabinet_id);
+                    mIHomeAPresenter.getMacFromService(cabinet_id.substring(cabinet_id.lastIndexOf("=")+1));
                 }
                 break;
             case 2:
@@ -644,8 +652,8 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
     private class DfuSuccessReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            LogUtils.e(TAG,"DFU成功的广播");
             String connectedMac = (String) SharedPreferencesUtils.getParam(mContext,"connect_mac","");
+            LogUtils.e(TAG,"DFU后重新连接设备："+connectedMac);
             selectedMac = connectedMac;
             if (!TextUtils.isEmpty(connectedMac)){
                 showLoading("",mContext);
