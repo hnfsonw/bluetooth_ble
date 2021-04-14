@@ -402,8 +402,9 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
      */
     @Override
     public void verisonInfosRespones(ResponseInfoModel infoBean) {
-//        if (infoBean.getData().getMac() != null){
-            String macBefore = "c76c12c00f26";
+        if (infoBean.getData().getMac() != null){
+//            String macBefore = "c76c12c00f26";
+            String macBefore = infoBean.getData().getMac();
             StringBuilder sb = new StringBuilder();
             for (int i = 0;i<macBefore.length();i = i+2){
                 sb.append(macBefore.substring(i,i+2));
@@ -419,7 +420,7 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
                     spMacChose.setSelection(i);
                 }
             }
-//        }
+        }
     }
 
     @Override
