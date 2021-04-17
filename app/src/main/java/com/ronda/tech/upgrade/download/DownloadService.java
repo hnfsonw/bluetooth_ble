@@ -3,6 +3,7 @@ package com.ronda.tech.upgrade.download;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Message;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -32,6 +33,10 @@ public class DownloadService extends IntentService {
         LogUtils.d(TAG, "download_file --" + mDownloadFileName);
 
         final File file = new File(Constants.APP_ROOT_PATH + Constants.DOWNLOAD_DIR + mDownloadFileName);
+        Log.e("hnf","路径:"+(Constants.APP_ROOT_PATH + Constants.DOWNLOAD_DIR + mDownloadFileName));
+        if (!file.exists()){
+            file.mkdir();
+        }
         int range = (int) SharedPreferencesUtils.getParam(MyApplication.getContext(),"range",0);
 
         if (file.exists()) {
@@ -41,7 +46,7 @@ public class DownloadService extends IntentService {
 //                startDownload(file.length(),mDownloadFileName,downloadUrl);
 //            }
             //后台接口没有做断点续传功能，文件也比较小
-            file.delete();
+//            file.delete();
             startDownload(0,mDownloadFileName,downloadUrl);
         }else {
             startDownload(0,mDownloadFileName,downloadUrl);

@@ -92,7 +92,9 @@ public class HomeAModelImpl extends BaseImpl implements IHomeAModel {
 
     @Override
     protected void onRequestSuccessful(ResponseInfoModel body) {
-        homeCallback.getVerisonSuccessful(body);
+        if (homeCallback != null){
+            homeCallback.getVerisonSuccessful(body);
+        }
     }
 
     @Override

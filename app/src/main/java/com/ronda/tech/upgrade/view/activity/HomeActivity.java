@@ -473,8 +473,13 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(netBroadcastReceiver);
-        unregisterReceiver(dfuSuccessReceiver);
+        if (netBroadcastReceiver != null){
+            unregisterReceiver(netBroadcastReceiver);
+        }
+
+        if (dfuSuccessReceiver != null){
+            unregisterReceiver(dfuSuccessReceiver);
+        }
     }
 
     @Override
@@ -523,7 +528,7 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
                 tvConnectSates.setTextColor(getResources().getColor(R.color.green));
                 tvConnectSates.setText("已连接");
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

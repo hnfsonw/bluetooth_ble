@@ -122,6 +122,11 @@ public class MyAsyncTask extends AsyncTask<String,Integer,String> implements Dfu
     @Override
     public void onDfuCompleted(@NonNull String s) {
         LogUtils.e(TAG,"onDfuCompleted:"+s);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Intent intent = new Intent(mContext, UpgradeSuccessfulActivity.class);
         mContext.startActivity(intent);
     }

@@ -258,6 +258,7 @@ public class BleManager {
                 onConnectSate.connected(1);
             }
 
+            Log.d(TAG,"dfu ready:"+getConnectType());
             if (getConnectType() == 3){
                 onDfuListener.onDfuReadyListener();
                 onConnectSate.connected(3);
@@ -341,6 +342,7 @@ public class BleManager {
     }
 
     public void reDiscover(){
+        Log.d(TAG,"重新发现设备");
         if (bluetoothGatt != null){
             setConnectType(1);
             bluetoothGatt.discoverServices();
@@ -348,6 +350,7 @@ public class BleManager {
     }
 
     public boolean writeDfu(String hexStr) {
+        Log.d(TAG,"发送DFU指令:"+hexStr);
         byte[] byteArray = TypeChangeUtils.hexToByteArr(hexStr.toLowerCase());
         if (dfuCharacterstic == null)
             return false;
