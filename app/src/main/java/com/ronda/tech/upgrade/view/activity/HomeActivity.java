@@ -97,6 +97,8 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
     private String writeDateCmd;
     private String dfuDecode;
     private DfuSuccessReceiver dfuSuccessReceiver;
+    private boolean isConnected;
+    private boolean hasVersionNumber;//获取版本号的指令是否得到了回复
 
     @Override
     protected void init() {
@@ -218,6 +220,9 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        if (isConnected){
+                            return;
+                        }
                         tvConnectSates.setTextColor(getResources().getColor(R.color.red));
                         tvConnectSates.setText("未连接");
                     }
@@ -266,6 +271,7 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
         backPress = System.currentTimeMillis();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -307,7 +313,15 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
                     return;
                 }
 
+                if (isConnected){
+                    showToast("已连接，不必重复连接");
+                    return;
+                }
+                hasVersionNumber = false;
                 showLoading("",mContext);
+                if (bleManager.getConnectType() == 3){
+                    bleManager.setConnectType(1);
+                }
                 if (getCurrentDevice() != null){
                     SharedPreferencesUtils.setParam(mContext,"connect_mac",getCurrentDevice().getAddress());
                     bleManager.connect(getCurrentDevice());
@@ -372,6 +386,9 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
                 tvConnectSates.setTextColor(getResources().getColor(R.color.red));
                 tvVerison.setText("");
                 tvCpuVerison.setText("");
+                ivDownload.setImageDrawable(getResources().getDrawable(R.mipmap.download_before));
+                pbDownload.setVisibility(View.VISIBLE);
+                pbDownload.setProgress(0,true);
                 break;
             default:
 
@@ -386,6 +403,11 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
         switch (requestCode){
             case 1:
                 if (data != null){
+                    if (isConnected){
+                        tvConnectSates.setTextColor(getResources().getColor(R.color.green));
+                        tvConnectSates.setText("已连接");
+                    }
+
                     String cabinet_id = data.getExtras().getString("result");
                     LogUtils.e(TAG,"cabinet_id:"+cabinet_id.substring(cabinet_id.lastIndexOf("=")+1));
                     tvQrResult.setText(cabinet_id.substring(cabinet_id.lastIndexOf("=")+1));
@@ -527,6 +549,7 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
             public void run() {
                 tvConnectSates.setTextColor(getResources().getColor(R.color.green));
                 tvConnectSates.setText("已连接");
+                isConnected = true;
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -535,6 +558,17 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
                 if (type == 0){
                     bleManager.setConnectType(0);
                     bleManager.writeDatas(BleManager.CMD_GET_DEVICE_VERSION);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!hasVersionNumber){
+                                LogUtils.d(TAG,"获取版本号的指令未得到回复");
+                                tvVerison.setText("1.3");
+                                spCpuTypeChose.setText("1.3");
+                                tvCpuVerison.setText(BleManager.cpuTypeOne);
+                            }
+                        }
+                    },1000);
                 }
 
                 if (type == 1){
@@ -561,6 +595,7 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
                 }
                 tvConnectSates.setTextColor(getResources().getColor(R.color.red));
                 tvConnectSates.setText(msg);
+                isConnected = false;
             }
         });
     }
@@ -586,6 +621,7 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
                 byte[] byArr = TypeChangeUtils.hexStringToByte(hex);
                 //获取版本号的响应
                 if (byArr.length >= 4 && writeDateCmd.equalsIgnoreCase(BleManager.CMD_GET_DEVICE_VERSION)){
+                    hasVersionNumber = true;
                     tvVerison.setText(byArr[2]+"."+byArr[3]);
                     deviceVersion = byArr[2]+" "+byArr[3];
                     spCpuTypeChose.setText(byArr[2]+"."+byArr[3]);
@@ -648,6 +684,7 @@ public class HomeActivity extends BaseActivity implements IHomeAView, View.OnCli
     @Override
     public void onDfuReadyListener() {
         dismissLoading();
+        LogUtils.d(TAG,"跳转升级界面");
         Intent intent = new Intent(this,UpgradeActivity.class);
         intent.putExtra("deviceMac",selectedMac);
         intent.putExtra("fileName",tvFileName.getText());

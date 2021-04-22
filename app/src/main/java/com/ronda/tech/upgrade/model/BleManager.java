@@ -60,6 +60,7 @@ public class BleManager {
 
     private Handler mHandler = new Handler();
     private final long SCAN_PERIOD = 3000;
+    private final long SCAN_AGAIN_PERIOD = 4000;
     private boolean mScanning;                         //是否正在扫描
 
     public static BleManager getInstance() {
@@ -135,15 +136,25 @@ public class BleManager {
         if (adapter == null) return;
         this.onBlueScanCallback = onBlueScanCallback;
         if (enable) {//true
-            //5秒后停止搜索
+            //
+            //3秒后停止搜索
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     adapter.stopLeScan(mLeScanCallback);
                     mScanning = false;
-                    onBlueScanCallback.onScanFinish();
                 }
             }, SCAN_PERIOD);
+
+            //stop后不能立即发起回调，因为service可能还没关闭
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!mScanning){
+                        onBlueScanCallback.onScanFinish();
+                    }
+                }
+            },SCAN_AGAIN_PERIOD);
 
             if (mScanning){
                 return;
